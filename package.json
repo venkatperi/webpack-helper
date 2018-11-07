@@ -12,5 +12,22 @@
   "devDependencies": {
     "mocha": "^5.2.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "peerDependencies": {
+    "webpack": ">=4",
+    "webpack-cli": ">=3",
+    "webpack-chain": ">=5",
+    "webpack-bundle-analyzer": "",
+    "webpack-dev-server": ">=3",
+    "hard-source-webpack-plugin": "",
+    "file-loader": "",
+    "vue-style-loader": "",
+    "css-loader": "",
+    "sass-loader": "",
+    "node-sass": "",
+    "typescript": "",
+    "ts-loader": "",
+    "vue-loader": "",
+    "vue-template-compiler": ""
+  }
 }
