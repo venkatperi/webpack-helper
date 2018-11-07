@@ -2,29 +2,17 @@
   "name": "@venkatperi/webpack-helper",
   "version": "1.0.0",
   "description": "Simplify Repetitive Webpack Configs",
+  "bin":"bin/",
   "main": "index.js",
-  "private": false,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "node lib/install"
   },
   "author": "Venkat Peri <venkatperi@gmail.com> (http://www.vperi.com/)",
   "license": "MIT",
   "devDependencies": {
-    "css-loader": "^1.0.1",
-    "file-loader": "^2.0.0",
-    "hard-source-webpack-plugin": "^0.12.0",
-    "mocha": "^5.2.0",
-    "node-sass": "^4.10.0",
-    "sass-loader": "^7.1.0",
-    "ts-loader": "^5.3.0",
-    "typescript": "^3.1.6",
-    "vue-loader": "^15.4.2",
-    "vue-style-loader": "^4.1.2",
-    "vue-template-compiler": "^2.5.17",
-    "webpack": "^4.25.1",
-    "webpack-bundle-analyzer": "^3.0.3",
-    "webpack-chain": "^5.0.1",
-    "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.10"
+    "mocha": "^5.2.0"
+  },
+  "dependencies": {
   }
 }

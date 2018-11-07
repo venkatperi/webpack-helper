@@ -1,5 +1,5 @@
 const path = require( 'path' )
-const { findPackage } = require( '../lib/lib/index' )
+const { findPackage } = require( '../lib/util' )
 
 describe( 'util', function () {
   describe( 'package location', async function () {

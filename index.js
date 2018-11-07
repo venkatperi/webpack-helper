@@ -1,13 +1,9 @@
 const path = require( 'path' )
 const run = require( './lib/index' )
-// const { findPackage } = require( './lib/lib/index' )
-// const packageDir = findPackage( path.resolve( __dirname, '..' ) )
-// if ( !packageDir )
-//   throw new Error( 'No package.json found?' )
 
 const defaults = {
   modules: [
-    ['vue', {}],
+    'vue',
     'ts',
     ['style', {
       cssLoader: {
