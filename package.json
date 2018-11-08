@@ -1,6 +1,6 @@
 {
   "name": "@venkatperi/webpack-helper",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Simplify Repetitive Webpack Configs",
   "bin": "bin/",
   "main": "index.js",
