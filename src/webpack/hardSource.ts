@@ -21,13 +21,13 @@
 
 
 import * as Config from "webpack-chain"
-import { ModuleFn, ModuleOpts } from "../types"
+import { ModuleArgs, ModuleFn, ModuleOpts } from "../types"
 
-let fn: ModuleFn = (config: Config, opts: ModuleOpts) => {
+let fn: ModuleFn = (config: Config, opts: ModuleOpts, args: ModuleArgs) => {
     const Plugin = require('hard-source-webpack-plugin');
     config
         .plugin('hardSource')
-        .use(Plugin, opts.args)
+        .use(Plugin, args.plugin)
 }
 
 module.exports = Object.assign(fn, {

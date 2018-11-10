@@ -17,7 +17,6 @@ export type ModuleOpts = {
     webpack?: any
     isLocal?: boolean
     mode: Mode
-    args?: any
 }
 
 export type ModuleFn = (config: Config, opts: ModuleOpts,

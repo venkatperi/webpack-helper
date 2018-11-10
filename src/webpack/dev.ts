@@ -21,12 +21,12 @@
 
 
 import * as Config from "webpack-chain"
-import { ModuleFn, ModuleOpts } from "../types"
+import { ModuleArgs, ModuleFn, ModuleOpts } from "../types"
 
-let fn: ModuleFn = (config: Config, opts: ModuleOpts) =>
+let fn: ModuleFn = (config: Config, opts: ModuleOpts, args: ModuleArgs) =>
     config.when(opts.mode.development, config => {
-        config.output.filename(opts.args.name || '[name].js')
-        config.devtool(opts.args.sourceMap || 'source-map')
+        config.output.filename(args.name || '[name].js')
+        config.devtool(args.sourceMap || 'source-map')
     })
 
 module.exports = Object.assign(fn, {

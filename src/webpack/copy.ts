@@ -27,7 +27,7 @@ let fn: ModuleFn = (config: Config, opts: ModuleOpts, args: ModuleArgs) => {
     const Plugin = require('copy-webpack-plugin')
     config
         .plugin('copyWebpackPlugin')
-        .use(Plugin, opts.args)
+        .use(Plugin, args.plugin)
 }
 
 module.exports = Object.assign(fn, {
