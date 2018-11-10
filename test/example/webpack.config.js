@@ -1,42 +1,35 @@
 const path = require( 'path' )
-// const run = require( './webpack' )
-const { run } = require( '@venkatperi/webpack-helper' )
-const pkg = require( './package.json' )
+const webpack = require( 'webpack' )
+const { webpackHelper } = require( '@venkatperi/webpack-helper' )
 
-const modules = [
-  'mode',
-  ['vue', {}],
-  'ts',
-  ['style', {
-    cssLoader: {
-      modules: false,
-      localIdentName: '[name]-[local]',
-    },
-  }],
-  'img',
-  'ext',
-  'devServer',
-  'misc',
-  'dev',
-  'prod',
-  ['chunkHashReplace', {
-    src: 'index.html',
-    dest: 'dist/index.html',
-  }],
-]
+let cwd = __dirname
+let buildDir = 'dist'
+
+const modules = {
+  mode: true,
+  vue: true,
+  ts: true,
+  style: true,
+  img: true,
+  ext: true,
+  devServer: true,
+  misc: true,
+  dev: true,
+  prod: true,
+}
+
 const variants = [
+  'cjs',
   'umd',
 ]
 
-let cwd = __dirname
-module.exports = run( { variants, modules, cwd }, ( config ) => {
-  config
-    .entry( 'simple-example' )
-    .add( './src/main.ts' )
+module.exports = webpackHelper( variants, modules, cwd, buildDir, webpack,
+  ( config ) => {
+    config
+      .entry( 'vue-splitter-pane' )
+      .add( './src/index.ts' )
 
-  config.baseUrl = '/dist'
-
-  config.output
-    .path( path.resolve( __dirname, './dist' ) );
-} )
+    config.output
+      .path( path.resolve( __dirname, buildDir ) );
+  } )
 
