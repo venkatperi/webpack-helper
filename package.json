@@ -17,5 +17,9 @@
   "devDependencies": {
     "@types/webpack-chain": "^4.8.1",
     "webpack-chain": "^5.0.1"
-  }
+  },
+  "files": [
+    "src/",
+    "dist/"
+  ]
 }
