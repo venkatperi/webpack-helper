@@ -111,8 +111,9 @@ export async function webpackHelper(
     }
 
     let args = {}
-    let configs = variants.map((variant) => {
-        let cfg = processModules(variant, cwd, buildDir, webpack,
+    let configs = []
+    for (let variant of variants) {
+        let cfg = await processModules(variant, cwd, buildDir, webpack,
             modules, env, init)
 
         allReqs[variant](cfg, {cwd, buildDir, mode, env}, args)
@@ -122,8 +123,8 @@ export async function webpackHelper(
         if (modules.speedMeasure) {
             c = speedMeasure(c)
         }
-        return c
-    })
+        configs.push(c)
+    }
 
 
     if (process.env.DUMP_CONFIG) {
