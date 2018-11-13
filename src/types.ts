@@ -16,7 +16,8 @@ export type ModuleOpts = {
     variant?: string,
     webpack?: any
     isLocal?: boolean
-    mode: Mode
+    mode: Mode,
+    env: Env
 }
 
 export type ModuleFn = (config: Config, opts: ModuleOpts,
@@ -45,3 +46,5 @@ export type ModuleList = {
 export type ModuleArgs = {
     [k in string]: any
 }
+
+export type Env = { [k in string]: any }

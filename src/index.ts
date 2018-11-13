@@ -20,7 +20,7 @@ import * as Config from "webpack-chain"
 //  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 //  USE OR OTHER DEALINGS IN THE SOFTWARE.
-import { InitCallback, ModuleList, ResolvedModules } from "./types"
+import { Env, InitCallback, ModuleList, ResolvedModules } from "./types"
 import { dumpConfig, findAllModules, mode } from "./util"
 
 
@@ -35,9 +35,11 @@ export let allReqs: ResolvedModules = {}
  * @param webpack
  * @param variant
  * @return {Config}
+ * @param env
  */
-export function processModules(variant: string, cwd: string, buildDir: string,
-    webpack: any, modules: ModuleList, init: InitCallback): Config {
+export function processModules(variant: string, cwd: string,
+    buildDir: string, webpack: any, modules: ModuleList,
+    env: Env, init: InitCallback): Config {
 
     const config = new Config()
     if (init) {
@@ -52,7 +54,7 @@ export function processModules(variant: string, cwd: string, buildDir: string,
 
             let args = typeof opts === 'boolean' ? {} : opts
             allReqs[module](config,
-                {cwd, mode, buildDir, webpack, variant},
+                {cwd, mode, buildDir, webpack, variant, env},
                 args,
             )
         }
@@ -62,36 +64,37 @@ export function processModules(variant: string, cwd: string, buildDir: string,
 
 /**
  *
- * @param variants
- * @param modules
- * @param cwd
- * @param init
- * @return {Promise<webpack.Configuration[]>}
- * @param buildDir
- * @param webpack
+ * @param env
+ * @return {(variants: string[], modules: ModuleList, cwd: string, buildDir:
+ *     string, webpack: any, init: InitCallback) =>
+ *     Promise<webpack.Configuration[]>}
  */
-export async function webpackHelper(variants: string[],
-    modules: ModuleList, cwd: string, buildDir: string, webpack: any,
-    init: InitCallback): Promise<Webpack.Configuration[]> {
-    allReqs = await findAllModules(cwd)
+export function webpackHelper(env: Env) {
+    return async function processVariants(variants: string[],
+        modules: ModuleList, cwd: string, buildDir: string, webpack: any,
+        init: InitCallback): Promise<Webpack.Configuration[]> {
 
-    let args = {}
-    let configs = variants.map((variant) => {
-        let cfg = processModules(variant, cwd, buildDir, webpack, modules, init)
+        allReqs = await findAllModules(cwd)
 
-        if (mode.production) {
-            allReqs[variant](cfg, {cwd, buildDir, mode}, args)
+        let args = {}
+        let configs = variants.map((variant) => {
+            let cfg = processModules(variant, cwd, buildDir, webpack,
+                modules, env, init)
+
+            if (mode.production) {
+                allReqs[variant](cfg, {cwd, buildDir, mode, env}, args)
+            }
+
+            let c = cfg.toConfig()
+            c.name = variant
+            return c
+        })
+
+        if (process.env.DUMP_CONFIG || env.DUMP_CONFIG) {
+            dumpConfig(configs)
         }
 
-        let c = cfg.toConfig()
-        c.name = variant
-        return c
-    })
-
-    if (process.env.DUMP_CONFIG) {
-        dumpConfig(configs)
+        return configs
     }
-
-    return configs
 }
 

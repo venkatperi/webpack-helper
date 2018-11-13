@@ -1,3 +1,5 @@
--R spec
---full-trace
---timeout 10000
+--require ts-node/register
+--ui bdd
+--timeout 50000
+test/*.ts
+

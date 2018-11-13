@@ -41,5 +41,5 @@ let fn: ModuleFn = (config: Config, opts: ModuleOpts, args: ModuleArgs) => {
 }
 
 module.exports = Object.assign(fn, {
-    __deps: ['vue-loader', 'vue-template-compiler']
+    __deps: ['vue-loader', 'vue-template-compiler', '@venkatperi/vue-shims']
 })
