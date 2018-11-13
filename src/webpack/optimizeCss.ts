@@ -25,6 +25,10 @@ const name = 'optimize-css-assets-webpack-plugin'
 import * as Config from "webpack-chain"
 import { ModuleArgs, ModuleFn, ModuleOpts } from "../types"
 
+const defaultArgs = {
+    canPrint: false
+}
+
 let fn: ModuleFn = (config: Config, opts: ModuleOpts, args: ModuleArgs) => {
     const Plugin = require(name)
     const styleRule = config.module.rule('style')
@@ -32,7 +36,7 @@ let fn: ModuleFn = (config: Config, opts: ModuleOpts, args: ModuleArgs) => {
     config.when(styleRule.uses.has('miniCssExtract'), (config) => {
         config
             .plugin('optimizeCss')
-            .use(Plugin, [args.plugin || {}])
+            .use(Plugin, [Object.assign({}, defaultArgs, args.plugin)])
     })
 }
 
