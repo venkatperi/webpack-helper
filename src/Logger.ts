@@ -19,40 +19,13 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 //  USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import { ResolvedModules } from "./types"
-import { findAllModules, npmInstall } from "./util"
+// @ts-ignore
+import logger from "wtlog"
 
 
-const defaultDeps = [
-    'webpack',
-    '@types/webpack',
-    'webpack-cli',
-    'webpack-chain',
-    '@types/webpack-chain',
-]
+/**
+ * @hidden
+ * @param {string} tag
+ */
+export default (tag: string) => logger(tag)
 
-async function installDeps(modules: ResolvedModules,
-    cwd: string): Promise<void> {
-    let deps = [...defaultDeps]
-
-    for (let m of Object.values(modules)) {
-        let dep = m.__deps || []
-        deps.push(...dep)
-    }
-
-    await npmInstall(deps, {
-        saveDev: true,
-        output: true,
-        cwd
-    })
-}
-
-async function install(): Promise<void> {
-    let cwd = process.cwd()
-    console.log(`pwd: ${cwd}`)
-    let modules = await findAllModules(cwd)
-    await installDeps(modules, cwd)
-}
-
-
-module.exports = install()

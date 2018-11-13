@@ -2,6 +2,7 @@ import { ChildProcess, exec, ExecException } from "child_process";
 import * as fs from "fs"
 import * as path from "path"
 import { promisify } from "util"
+import Logger from "./Logger"
 import { ExecpOptions, Mode, ResolvedModules } from "./types"
 
 //  Copyright 2018, Venkat Peri.
@@ -25,6 +26,7 @@ import { ExecpOptions, Mode, ResolvedModules } from "./types"
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 //  USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+const LOG = Logger('WH:util')
 
 const statp = promisify(fs.stat)
 const readdirp = promisify(fs.readdir)
@@ -82,7 +84,6 @@ export async function findPackage(dir: string): Promise<string | null> {
 }
 
 export function execp(cmd: string, opts?: ExecpOptions): Promise<any> {
-
     return new Promise((resolve, reject) => {
         const child: ChildProcess = exec(cmd, opts,
             (err: ExecException | null, stdout: string | Buffer,
@@ -155,9 +156,12 @@ export async function findAllModules(cwd: string): Promise<ResolvedModules> {
     let dirs: string[] = [cwd, ...modulePaths, __dirname]
     let modules: ResolvedModules = {}
 
+    LOG.i('findAllModules', cwd)
+
     for (let d of dirs) {
         let wdir = path.resolve(d, 'webpack')
         if (await dirExists(wdir)) {
+            LOG.i('loading modules from', wdir)
             let files: string[] = (await readdirp(wdir))
                 .filter((f: string) => !f.startsWith('_')
                     && f.endsWith('.js')
@@ -166,7 +170,12 @@ export async function findAllModules(cwd: string): Promise<ResolvedModules> {
 
             for (let f of files) {
                 let name = path.basename(f).split('.')[0]
-                modules[name] = require(f)
+                try {
+                    LOG.i('require', name)
+                    modules[name] = require(f)
+                } catch (e) {
+                    LOG.e(name, e)
+                }
             }
         }
     }

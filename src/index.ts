@@ -1,5 +1,6 @@
 import * as Webpack from "webpack"
 import * as Config from "webpack-chain"
+import Logger from './Logger'
 //  Copyright 2018, Venkat Peri.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a
@@ -23,6 +24,7 @@ import * as Config from "webpack-chain"
 import { Env, InitCallback, ModuleList, ResolvedModules } from "./types"
 import { dumpConfig, findAllModules, mode } from "./util"
 
+const LOG = Logger('webpack-helper')
 
 export let allReqs: ResolvedModules = {}
 
@@ -40,6 +42,8 @@ export let allReqs: ResolvedModules = {}
 export function processModules(variant: string, cwd: string,
     buildDir: string, webpack: any, modules: ModuleList,
     env: Env, init: InitCallback): Config {
+
+    LOG.i('processModules', variant, modules)
 
     const config = new Config()
     if (init) {
@@ -70,9 +74,15 @@ export function processModules(variant: string, cwd: string,
  *     Promise<webpack.Configuration[]>}
  */
 export function webpackHelper(env: Env) {
-    return async function processVariants(variants: string[],
-        modules: ModuleList, cwd: string, buildDir: string, webpack: any,
+    return async function processVariants(
+        variants: string[],
+        modules: ModuleList,
+        cwd: string,
+        buildDir: string,
+        webpack: any,
         init: InitCallback): Promise<Webpack.Configuration[]> {
+
+        LOG.i('init', variants, modules, cwd, buildDir)
 
         allReqs = await findAllModules(cwd)
 

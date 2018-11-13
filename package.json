@@ -13,7 +13,9 @@
   },
   "author": "Venkat Peri <venkatperi@gmail.com> (http://www.vperi.com/)",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "wtlog": "^1.0.0"
+  },
   "devDependencies": {
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.5",
