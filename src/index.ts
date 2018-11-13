@@ -50,6 +50,7 @@ export function processModules(variant: string,
     LOG.i('processModules', variant, modules)
 
     const config = new Config()
+    config.context(cwd)
     if (init) {
         init(config)
     }
