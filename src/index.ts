@@ -68,43 +68,46 @@ export function processModules(variant: string, cwd: string,
 
 /**
  *
- * @param env
- * @return {(variants: string[], modules: ModuleList, cwd: string, buildDir:
- *     string, webpack: any, init: InitCallback) =>
- *     Promise<webpack.Configuration[]>}
+ * @return {Promise<webpack.Configuration[]>}
+ * @param variants
+ * @param modules
+ * @param cwd
+ * @param buildDir
+ * @param webpack
+ * @param init
  */
-export function webpackHelper(env: Env) {
-    return async function processVariants(
-        variants: string[],
-        modules: ModuleList,
-        cwd: string,
-        buildDir: string,
-        webpack: any,
-        init: InitCallback): Promise<Webpack.Configuration[]> {
+export async function processVariants(
+    variants: string[],
+    modules: ModuleList,
+    cwd: string,
+    buildDir: string,
+    webpack: any,
+    init: InitCallback): Promise<Webpack.Configuration[]> {
 
-        LOG.i('init', variants, modules, cwd, buildDir)
+    const env: Env = {}
 
-        allReqs = await findAllModules(cwd)
+    LOG.i('init', variants, modules, cwd, buildDir)
 
-        let args = {}
-        let configs = variants.map((variant) => {
-            let cfg = processModules(variant, cwd, buildDir, webpack,
-                modules, env, init)
+    allReqs = await findAllModules(cwd)
 
-            if (mode.production) {
-                allReqs[variant](cfg, {cwd, buildDir, mode, env}, args)
-            }
+    let args = {}
+    let configs = variants.map((variant) => {
+        let cfg = processModules(variant, cwd, buildDir, webpack,
+            modules, env, init)
 
-            let c = cfg.toConfig()
-            c.name = variant
-            return c
-        })
-
-        if (process.env.DUMP_CONFIG || env.DUMP_CONFIG) {
-            dumpConfig(configs)
+        if (mode.production) {
+            allReqs[variant](cfg, {cwd, buildDir, mode, env}, args)
         }
 
-        return configs
+        let c = cfg.toConfig()
+        c.name = variant
+        return c
+    })
+
+    if (process.env.DUMP_CONFIG) {
+        dumpConfig(configs)
     }
+
+    return configs
 }
 
