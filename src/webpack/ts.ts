@@ -23,6 +23,11 @@
 import * as Config from "webpack-chain"
 import { ModuleArgs, ModuleFn, ModuleOpts } from "../types"
 
+const defaultLoaderOpts = {
+    transpileOnly: true,
+    experimentalWatchApi: true,
+}
+
 let fn: ModuleFn = (config: Config, opts: ModuleOpts, args: ModuleArgs) => {
     config.module
           .rule('ts')
@@ -30,6 +35,7 @@ let fn: ModuleFn = (config: Config, opts: ModuleOpts, args: ModuleArgs) => {
           .exclude.add(/node_modules/).end()
           .use('ts')
           .loader('ts-loader')
+          .options(Object.assign({}, defaultLoaderOpts, args.tsLoader))
           .when(config.module.rules.has('vue'),
               x => x.options({appendTsSuffixTo: [/\.vue$/]}))
 }
