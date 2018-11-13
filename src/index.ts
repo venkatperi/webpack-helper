@@ -66,6 +66,12 @@ export function processModules(variant: string, cwd: string,
     return config
 }
 
+function speedMeasure(config: Webpack.Configuration): Webpack.Configuration {
+    const SMR = require('speed-measure-webpack-plugin')
+    const smr = new SMR()
+    return smr(config)
+}
+
 /**
  *
  * @return {Promise<webpack.Configuration[]>}
@@ -101,8 +107,12 @@ export async function webpackHelper(
 
         let c = cfg.toConfig()
         c.name = variant
+        if (modules.speedMeasure) {
+            c = speedMeasure(c)
+        }
         return c
     })
+
 
     if (process.env.DUMP_CONFIG) {
         dumpConfig(configs)
