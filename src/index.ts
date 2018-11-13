@@ -76,7 +76,7 @@ export function processModules(variant: string, cwd: string,
  * @param webpack
  * @param init
  */
-export async function processVariants(
+export async function webpackHelper(
     variants: string[],
     modules: ModuleList,
     cwd: string,
