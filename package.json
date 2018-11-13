@@ -9,7 +9,8 @@
     "clean": "rm -rf dist",
     "prebuild": "npm run clean",
     "build": "npm run build:ts",
-    "build:ts": "tsc"
+    "build:ts": "tsc",
+    "prepare":"npm run build"
   },
   "author": "Venkat Peri <venkatperi@gmail.com> (http://www.vperi.com/)",
   "license": "MIT",
