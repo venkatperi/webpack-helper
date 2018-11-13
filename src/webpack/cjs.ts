@@ -24,8 +24,9 @@ import * as Config from "webpack-chain"
 import { ModuleArgs, ModuleFn, ModuleOpts } from "../types"
 
 let fn: ModuleFn = (config: Config, opts: ModuleOpts, args: ModuleArgs) => {
+    const outDir = path.resolve(opts.cwd || __dirname, opts.buildDir)
     config.output
-          .path(path.resolve(opts.cwd || __dirname, opts.buildDir))
+          .path(outDir)
           .libraryTarget('commonjs2')
           .filename(args.name || `[name].js`)
 }

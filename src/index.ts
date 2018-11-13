@@ -60,6 +60,8 @@ export function processModules(variant: string,
             if (!allReqs[module]) {
                 throw new Error(`Module not found: ${module}`)
             }
+            LOG.i('module', module, opts)
+
 
             let args = typeof opts === 'boolean' ? {} : opts
             allReqs[module](config,
