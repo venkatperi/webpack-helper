@@ -1,6 +1,9 @@
 import { ExecOptionsWithStringEncoding } from "child_process"
 import { Writable } from "stream";
+import * as Webpack from "webpack"
 import * as Config from "webpack-chain"
+
+export type Lifecycle = 'process' | 'pre' | 'post'
 
 export type Mode = {
     value: string;
@@ -23,11 +26,15 @@ export type ModuleOpts = {
 export type ModuleFn = (config: Config, opts: ModuleOpts,
     args: ModuleArgs) => void
 
-export type ModuleDeps = {
+export type WrapFn = (config: Webpack.Configuration, opts: ModuleOpts,
+    args: ModuleArgs) => Webpack.Configuration
+
+export type ModuleProps = {
     __deps: Array<string>
+    wrap?: WrapFn
 }
 
-export type HelperModule = ModuleFn & ModuleDeps
+export type HelperModule = ModuleFn & ModuleProps
 
 export type ExecpOptions = ExecOptionsWithStringEncoding & {
     stdout?: Writable

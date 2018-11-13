@@ -27,7 +27,7 @@ let fn: ModuleFn = (config: Config, opts: ModuleOpts, args: ModuleArgs) => {
     config.output
           .path(path.resolve(opts.cwd || __dirname, opts.buildDir))
           .libraryTarget('commonjs2')
-          .filename(args.name || `[name].cjs.js`)
+          .filename(args.name || `[name].js`)
 }
 
 module.exports = Object.assign(fn, {

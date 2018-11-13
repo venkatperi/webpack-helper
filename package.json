@@ -20,6 +20,7 @@
   "devDependencies": {
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.5",
+    "@types/webpack": "^4.4.19",
     "@types/webpack-chain": "^4.8.1",
     "chai": "^4.2.0",
     "mocha": "^5.2.0",

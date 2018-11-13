@@ -22,21 +22,24 @@
  */
 
 
+import * as Webpack from 'webpack'
 import * as Config from "webpack-chain"
 import { ModuleArgs, ModuleFn, ModuleOpts } from "../types"
 
 
 let moduleName = 'speed-measure-webpack-plugin'
-// let moduleFriendlyName = 'speed'
-// const defaultOpts = {}
 
 let fn: ModuleFn = (config: Config, opts: ModuleOpts, args: ModuleArgs) => {
-    // const Plugin = require(moduleName)
-    // config
-    //     .plugin(moduleFriendlyName)
-        // .use(Plugin, [defaultOpts || args.plugin])
+}
+
+let wrap = (config: Webpack.Configuration, opts: ModuleOpts,
+    args: ModuleArgs): Webpack.Configuration => {
+    const SMR = require('speed-measure-webpack-plugin')
+    const smr = new SMR(args.plugin)
+    return smr.wrap(config)
 }
 
 module.exports = Object.assign(fn, {
-    __deps: [moduleName]
+    __deps: [moduleName],
+    wrap
 })

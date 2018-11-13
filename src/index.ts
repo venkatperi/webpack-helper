@@ -39,9 +39,13 @@ export let allReqs: ResolvedModules = {}
  * @return {Config}
  * @param env
  */
-export function processModules(variant: string, cwd: string,
-    buildDir: string, webpack: any, modules: ModuleList,
-    env: Env, init: InitCallback): Config {
+export function processModules(variant: string,
+    cwd: string,
+    buildDir: string,
+    webpack: any,
+    modules: ModuleList,
+    env: Env,
+    init: InitCallback): Config {
 
     LOG.i('processModules', variant, modules)
 
@@ -66,10 +70,15 @@ export function processModules(variant: string, cwd: string,
     return config
 }
 
+/**
+ *
+ * @param config
+ * @return {any | string}
+ */
 function speedMeasure(config: Webpack.Configuration): Webpack.Configuration {
     const SMR = require('speed-measure-webpack-plugin')
     const smr = new SMR()
-    return smr(config)
+    return smr.wrap(config)
 }
 
 /**
@@ -96,14 +105,16 @@ export async function webpackHelper(
 
     allReqs = await findAllModules(cwd)
 
+    if (!mode.production) {
+        variants = ['cjs']
+    }
+
     let args = {}
     let configs = variants.map((variant) => {
         let cfg = processModules(variant, cwd, buildDir, webpack,
             modules, env, init)
 
-        if (mode.production) {
-            allReqs[variant](cfg, {cwd, buildDir, mode, env}, args)
-        }
+        allReqs[variant](cfg, {cwd, buildDir, mode, env}, args)
 
         let c = cfg.toConfig()
         c.name = variant
