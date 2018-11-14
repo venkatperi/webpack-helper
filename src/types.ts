@@ -11,7 +11,7 @@ export type Mode = {
     development: boolean
 }
 
-export type InitCallback = (config: Config) => void
+export type InitCallback = (config: Config, variant: string) => void
 
 export type ModuleOpts = {
     cwd?: string,

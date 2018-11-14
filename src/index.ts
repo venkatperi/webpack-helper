@@ -52,7 +52,7 @@ export function processModules(variant: string,
     const config = new Config()
     config.context(cwd)
     if (init) {
-        init(config)
+        init(config, variant)
     }
 
     for (let [module, opts] of Object.entries(modules)) {
