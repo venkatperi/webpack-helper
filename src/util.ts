@@ -151,6 +151,10 @@ export async function findModule(name: string,
     throw new Error(`Module not found: '${name}`)
 }
 
+function isModule(f: string) {
+    return !f.startsWith('_') && f !== 'index.js'
+        && (f.endsWith('.js') || f.endsWith('.ts'))
+}
 
 export async function findAllModules(cwd: string): Promise<ResolvedModules> {
     let dirs: string[] = [cwd, ...modulePaths, __dirname]
@@ -163,9 +167,7 @@ export async function findAllModules(cwd: string): Promise<ResolvedModules> {
         if (await dirExists(wdir)) {
             LOG.i('loading modules from', wdir)
             let files: string[] = (await readdirp(wdir))
-                .filter((f: string) => !f.startsWith('_')
-                    && f.endsWith('.js')
-                    && f !== 'index.js')
+                .filter(isModule)
                 .map((x: string) => path.resolve(wdir, x))
 
             for (let f of files) {
