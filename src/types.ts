@@ -45,10 +45,13 @@ export type ResolvedModules = {
     [k in string]: HelperModule
 }
 
-export type ModuleList = {
+export type Modules = {
     [k in string]: any
 }
 
+export type Variants = {
+    [k in string]: Modules
+}
 
 export type ModuleArgs = {
     [k in string]: any

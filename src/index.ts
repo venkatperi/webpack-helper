@@ -21,7 +21,7 @@ import Logger from './Logger'
 //  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 //  USE OR OTHER DEALINGS IN THE SOFTWARE.
-import { Env, InitCallback, ModuleList, ResolvedModules } from "./types"
+import { Env, InitCallback, Modules, ResolvedModules, Variants } from "./types"
 import { dumpConfig, findAllModules, mode } from "./util"
 
 const LOG = Logger('webpack-helper')
@@ -43,7 +43,7 @@ export function processModules(variant: string,
     cwd: string,
     buildDir: string,
     webpack: any,
-    modules: ModuleList,
+    modules: Modules,
     env: Env,
     init: InitCallback): Config {
 
@@ -95,8 +95,8 @@ function speedMeasure(config: Webpack.Configuration): Webpack.Configuration {
  * @param init
  */
 export async function webpackHelper(
-    variants: string[],
-    modules: ModuleList,
+    variants: Variants,
+    // modules: Modules,
     cwd: string,
     buildDir: string,
     webpack: any,
@@ -104,18 +104,16 @@ export async function webpackHelper(
 
     const env: Env = {}
 
-    LOG.i('init', variants, modules, cwd, buildDir)
+    LOG.i('init', variants, cwd, buildDir)
 
     allReqs = await findAllModules(cwd)
 
-    if (!mode.production) {
-        variants = ['cjs']
-    }
-
     let args = {}
     let configs = []
-    for (let variant of variants) {
-        let cfg = await processModules(variant, cwd, buildDir, webpack,
+
+    for (let [variant, modules] of Object.entries(variants)) {
+        let cfg = await processModules(variant,
+            cwd, buildDir, webpack,
             modules, env, init)
 
         allReqs[variant](cfg, {cwd, buildDir, mode, env}, args)
